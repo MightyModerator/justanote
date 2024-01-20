@@ -79,7 +79,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
 
     private fun showDeleteDialog() {
         AlertDialog.Builder(this)
-            .setMessage(getString(R.string.note_deleted))
+            .setMessage(getString(R.string.confirm_delete))
             .setPositiveButton(getString(R.string.yes), this)
             .setNegativeButton(getString(R.string.no), null)
             .show()
