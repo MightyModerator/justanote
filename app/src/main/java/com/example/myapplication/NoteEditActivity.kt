@@ -16,7 +16,6 @@ import com.example.myapplication.entities.Note
 
 class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
 
-    // private var preferences: Preferences? = null
     private var noteDao: NoteDao? = null
     private var note: Note? = null
 
@@ -44,6 +43,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
             editTitle?.setText(note?.title)
             editMessage?.setText(note?.message)
         }
+
         // Set OnClickListener
         btnSave.setOnClickListener {
             val title = editTitle?.text.toString()
@@ -57,15 +57,11 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
                 noteDao!!.insertAll(Note(title, message))
             }
 
-            // Show toast for user
             Toast.makeText(this, noteDao!!.getAll().toString(), Toast.LENGTH_LONG).show()
 
             finish()
         }
 
-        // Vorbelegen von Titel und Nachricht
-        // editTitle.setText(preferences?.getNoteTitle())
-        // editMessage.setText(preferences?.getNoteMessage())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -94,7 +90,6 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         note?.let {
             noteDao?.delete(it)
 
-            // Display Toast
             Toast.makeText(this, R.string.note_deleted, Toast.LENGTH_LONG).show()
 
             finish()

@@ -13,13 +13,10 @@ import androidx.room.Room
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.database.NotesDatabase
 
-private var noteDao: NoteDao? = null
-private var adapter: NoteAdapter? = null
 
 class ListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
-    // private var tvTitle: TextView? = null
-    // private var tvMessage: TextView? = null
-
+    private var noteDao: NoteDao? = null
+    private var adapter: NoteAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +30,7 @@ class ListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         ).allowMainThreadQueries().build()
         noteDao = db.noteDao()
 
-        // tvTitle = findViewById(R.id.tvTitle)
-        // tvMessage = findViewById(R.id.tvMessage)
-
         val lvNotes = findViewById<ListView>(R.id.lvNotes)
-        // val notes = arrayOf("test", "test1", "test2")
-        // val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, notes)
-        // lvNotes.adapter = arrayAdapter
 
         adapter = NoteAdapter(this, noteDao!!.getAll())
         lvNotes.adapter = adapter
@@ -49,9 +40,6 @@ class ListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     override fun onResume() {
         super.onResume()
-
-        //tvTitle!!.text = Preferences(this).getNoteTitle()
-        //tvMessage!!.text = Preferences(this).getNoteMessage()
 
         adapter?.notes = noteDao!!.getAll()
         adapter?.notifyDataSetChanged()

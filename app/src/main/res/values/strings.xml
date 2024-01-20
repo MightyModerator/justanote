@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Just one note</string>
+    <string name="app_name">Just a note</string>
     <string name="login">Login</string>
     <string name="signed_in">Signed in</string>
     <string name="hint_title">Title</string>
