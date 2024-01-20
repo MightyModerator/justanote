@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -9,21 +10,24 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.room.Room
+import com.example.myapplication.dao.NoteDao
+import com.example.myapplication.database.NotesDatabase
+import com.example.myapplication.entities.Note
 
+class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
 
-class NoteEditActivity : AppCompatActivity() {
     // private var preferences: Preferences? = null
-
     private var noteDao: NoteDao? = null
+    private var note: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_edit)
+
         setSupportActionBar(findViewById(R.id.tbEdit))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
 
-        // preferences = Preferences(this)
         val editTitle = findViewById<EditText>(R.id.editTitle)
         val editMessage = findViewById<EditText>(R.id.editMessage)
         val btnSave = findViewById<Button>(R.id.btnSave)
@@ -34,15 +38,28 @@ class NoteEditActivity : AppCompatActivity() {
         ).allowMainThreadQueries().build()
         noteDao = db.noteDao()
 
+        val id = intent.getLongExtra("id", -1)
+        if (id >= 0) {
+            note = noteDao!!.loadAllByIds(id.toInt())[0]
+            editTitle?.setText(note?.title)
+            editMessage?.setText(note?.message)
+        }
         // Set OnClickListener
         btnSave.setOnClickListener {
             val title = editTitle?.text.toString()
             val message = editMessage?.text.toString()
-            noteDao!!.insertAll(Note(title, message))
-            // preferences?.setNoteTitle(editTitle.text.toString())
-            // preferences?.setNoteMessage(editMessage.text.toString())
-            // Toast.makeText(this, getString(R.string.note_saved), Toast.LENGTH_LONG).show()
+
+            if (note != null) {
+                note!!.title = title
+                note!!.message = message
+                noteDao?.update(note!!)
+            } else {
+                noteDao!!.insertAll(Note(title, message))
+            }
+
+            // Show toast for user
             Toast.makeText(this, noteDao!!.getAll().toString(), Toast.LENGTH_LONG).show()
+
             finish()
         }
 
@@ -52,30 +69,18 @@ class NoteEditActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.del -> {
-                showDeleteDialog()
-                true
-            }
-
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            R.id.del -> showDeleteDialog()
         }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun showDeleteDialog() {
         AlertDialog.Builder(this)
-            .setMessage(getString(R.string.confirm_delete))
-            .setPositiveButton(getString(R.string.yes)) { dialog, id ->
-                // preferences?.setNoteTitle(null)
-                // preferences?.setNoteMessage(null)
-                Toast.makeText(this, getString(R.string.note_deleted), Toast.LENGTH_LONG).show()
-                finish()
-            }
+            .setMessage(getString(R.string.note_deleted))
+            .setPositiveButton(getString(R.string.yes), this)
             .setNegativeButton(getString(R.string.no), null)
             .show()
     }
@@ -83,5 +88,16 @@ class NoteEditActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_edit, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onClick(p0: DialogInterface?, p1: Int) {
+        note?.let {
+            noteDao?.delete(it)
+
+            // Display Toast
+            Toast.makeText(this, R.string.note_deleted, Toast.LENGTH_LONG).show()
+
+            finish()
+        }
     }
 }

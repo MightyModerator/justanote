@@ -5,18 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.animation.AnimationUtils
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageView
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.room.Room
+import com.example.myapplication.dao.NoteDao
+import com.example.myapplication.database.NotesDatabase
 
 private var noteDao: NoteDao? = null
+private var adapter: NoteAdapter? = null
 
-class ListActivity : AppCompatActivity() {
+class ListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     // private var tvTitle: TextView? = null
     // private var tvMessage: TextView? = null
 
@@ -41,8 +41,9 @@ class ListActivity : AppCompatActivity() {
         // val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, notes)
         // lvNotes.adapter = arrayAdapter
 
-        val adapter = NoteAdapter(this, noteDao!!.getAll())
+        adapter = NoteAdapter(this, noteDao!!.getAll())
         lvNotes.adapter = adapter
+        lvNotes.onItemClickListener = this
 
     }
 
@@ -51,6 +52,10 @@ class ListActivity : AppCompatActivity() {
 
         //tvTitle!!.text = Preferences(this).getNoteTitle()
         //tvMessage!!.text = Preferences(this).getNoteMessage()
+
+        adapter?.notes = noteDao!!.getAll()
+        adapter?.notifyDataSetChanged()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -66,5 +71,11 @@ class ListActivity : AppCompatActivity() {
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val intent = Intent(this, NoteEditActivity::class.java)
+        intent.putExtra("id", id)
+        startActivity(intent)
     }
 }

@@ -1,9 +1,11 @@
-package com.example.myapplication
+package com.example.myapplication.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
+import com.example.myapplication.entities.Note
 
 @Dao
 
@@ -16,4 +18,10 @@ interface NoteDao {
 
     @Delete
     fun delete(note: Note)
+
+    @Query("SELECT * FROM notes WHERE id IS (:id)")
+    fun loadAllByIds(id: Int): List<Note>
+
+    @Update
+    fun update(note: Note)
 }
