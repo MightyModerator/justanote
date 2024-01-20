@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Nur eine Notiz</string>
+    <string name="login">Anmelden</string>
+    <string name="signed_in">Angemeldet</string>
+    <string name="hint_title">Titel</string>
+    <string name="hint_message">Nachricht</string>
+    <string name="add">Hinzufügen</string>
+    <string name="save">Speichern</string>
+    <string name="back">Zurück</string>
+    <string name="note_saved">Notiz gespeichert</string>
+    <string name="del">Löschen</string>
+    <string name="note_deleted">Notiz gelöscht</string>
+    <string name="confirm_delete">Möchtest du diese Notiz wirklich löschen?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+
+
+</resources>
