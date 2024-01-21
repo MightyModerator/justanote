@@ -31,7 +31,6 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         val editMessage = findViewById<EditText>(R.id.editMessage)
         val btnSave = findViewById<Button>(R.id.btnSave)
 
-        // Initialize Room DB
         val db = Room.databaseBuilder(
             applicationContext, NotesDatabase::class.java, "notes"
         ).allowMainThreadQueries().build()
@@ -44,7 +43,6 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
             editMessage?.setText(note?.message)
         }
 
-        // Set OnClickListener
         btnSave.setOnClickListener {
             val title = editTitle?.text.toString()
             val message = editMessage?.text.toString()

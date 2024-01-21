@@ -4,6 +4,7 @@ import android.content.Context
 
 class Preferences constructor(context: Context) {
 
+    // TODO: delete because shared preference not longer in use?
     companion object {
         const val PREFERENCES_NOTE_TITLE = "note_title"
         const val PREFERENCES_NOTE_MESSAGE = "note_message"

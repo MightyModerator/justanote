@@ -1,7 +1,6 @@
 package com.example.myapplication
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,7 +8,9 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
+import com.example.myapplication.adapters.NoteAdapter
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.database.NotesDatabase
 
@@ -24,7 +25,6 @@ class ListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
         setSupportActionBar(findViewById(R.id.tbMain))
 
-        // Initialize Room DB
         val db = Room.databaseBuilder(
             applicationContext, NotesDatabase::class.java, "notes"
         ).allowMainThreadQueries().build()

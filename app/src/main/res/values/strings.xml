@@ -1,18 +1,22 @@
 <resources>
     <string name="app_name">Just a note</string>
+    <string name="app_subtitle">Keep it simple</string>
+    <string name="app_description">You will never use another notes app. We promise!</string>
     <string name="login">Login</string>
     <string name="signed_in">Signed in</string>
     <string name="hint_title">Title</string>
-    <string name="hint_message">Message</string>
+    <string name="hint_message">Description</string>
     <string name="add">Add</string>
     <string name="save">Save</string>
     <string name="back">Back</string>
-    <string name="note_saved">Note saved</string>
     <string name="del">Delete</string>
+    <string name="note_saved">Note saved</string>
     <string name="note_deleted">Note deleted</string>
     <string name="confirm_delete">Do you really want to delete this note?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="logo_desc">Logo just a note</string>
+    <string name="img_desc">Image for the note</string>
 
 
 </resources>

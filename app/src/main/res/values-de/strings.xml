@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">Nur eine Notiz</string>
+    <string name="app_subtitle">Halten wir es einfach</string>
+    <string name="app_description">Du wirst nie wieder einen andere Notizen App verwenden. Wir versprechen es!</string>
     <string name="login">Anmelden</string>
     <string name="signed_in">Angemeldet</string>
     <string name="hint_title">Titel</string>
-    <string name="hint_message">Nachricht</string>
+    <string name="hint_message">Beschreibung</string>
     <string name="add">Hinzufügen</string>
     <string name="save">Speichern</string>
     <string name="back">Zurück</string>
@@ -13,6 +15,8 @@
     <string name="confirm_delete">Möchtest du diese Notiz wirklich löschen?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="logo_desc">Logo von nur eine Notiz</string>
+    <string name="img_desc">Bild für die Notiz</string>
 
 
 </resources>
