@@ -100,9 +100,9 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         if (note == null) {
             Toast.makeText(this, getString(R.string.share_not_saved), Toast.LENGTH_LONG).show()
         } else {
-            val titleString = getString(R.string.share_title) + (note?.title ?: "")
-            val messageString = getString(R.string.share_message) + (note?.message ?: "")
-            val shareBody = "$titleString\n$messageString"
+            val sendTitle = getString(R.string.share_title) + (note?.title ?: "")
+            val sendMessage = getString(R.string.share_message) + (note?.message ?: "")
+            val shareBody = "$sendTitle\n$sendMessage"
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
 

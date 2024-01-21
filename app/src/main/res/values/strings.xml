@@ -23,5 +23,9 @@
     <string name="share_subject">A note for you</string>
     <string name="share_choose">Share with</string>
     <string name="share_not_saved">You have to save your note before sharing is possible</string>
+    <string name="compose_shortcut_short_label1">Add a new note</string>
+    <string name="compose_shortcut_long_label1">Add a new note</string>
+    <string name="compose_disabled_message1">Shortcut disabled</string>
+
 
 </resources>

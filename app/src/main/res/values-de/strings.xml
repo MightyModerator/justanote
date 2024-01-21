@@ -23,6 +23,9 @@
     <string name="share_subject">Eine Notiz für dich</string>
     <string name="share_choose">Teilen über</string>
     <string name="share_not_saved">Du musst deine Notiz speichern, bevor das Teilen möglich ist</string>
+    <string name="compose_shortcut_short_label1">Neue Notiz hinzufügen</string>
+    <string name="compose_shortcut_long_label1">Neue Notiz hinzufügen</string>
+    <string name="compose_disabled_message1">Abkürzung deaktiviert</string>
 
 
 </resources>
