@@ -17,6 +17,12 @@
     <string name="no">Nein</string>
     <string name="logo_desc">Logo von nur eine Notiz</string>
     <string name="img_desc">Bild für die Notiz</string>
+    <string name="share">Teilen</string>
+    <string name="share_title">Titel der Notiz: </string>
+    <string name="share_message">Beschreibung der Notiz: </string>
+    <string name="share_subject">Eine Notiz für dich</string>
+    <string name="share_choose">Teilen über</string>
+    <string name="share_not_saved">Du musst deine Notiz speichern, bevor das Teilen möglich ist</string>
 
 
 </resources>

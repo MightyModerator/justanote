@@ -17,6 +17,11 @@
     <string name="no">No</string>
     <string name="logo_desc">Logo just a note</string>
     <string name="img_desc">Image for the note</string>
-
+    <string name="share">Share</string>
+    <string name="share_title">Titel of the note: </string>
+    <string name="share_message">Note description: </string>
+    <string name="share_subject">A note for you</string>
+    <string name="share_choose">Share with</string>
+    <string name="share_not_saved">You have to save your note before sharing is possible</string>
 
 </resources>

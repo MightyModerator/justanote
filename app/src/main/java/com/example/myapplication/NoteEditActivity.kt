@@ -1,7 +1,7 @@
 package com.example.myapplication
 
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.database.NotesDatabase
@@ -30,6 +31,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         val editTitle = findViewById<EditText>(R.id.editTitle)
         val editMessage = findViewById<EditText>(R.id.editMessage)
         val btnSave = findViewById<Button>(R.id.btnSave)
+
 
         val db = Room.databaseBuilder(
             applicationContext, NotesDatabase::class.java, "notes"
@@ -63,12 +65,24 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> finish()
-            R.id.del -> showDeleteDialog()
-        }
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
 
-        return super.onOptionsItemSelected(item)
+            R.id.del -> {
+                showDeleteDialog()
+                true
+            }
+
+            R.id.share -> {
+                shareNote()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun showDeleteDialog() {
@@ -77,6 +91,25 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
             .setPositiveButton(getString(R.string.yes), this)
             .setNegativeButton(getString(R.string.no), null)
             .show()
+    }
+
+    // TODO share not working when the note is not saved in database.
+    //  Same problem when you edit a share.
+    //  Only text share.
+    private fun shareNote() {
+        if (note == null) {
+            Toast.makeText(this, getString(R.string.share_not_saved), Toast.LENGTH_LONG).show()
+        } else {
+            val titleString = getString(R.string.share_title) + (note?.title ?: "")
+            val messageString = getString(R.string.share_message) + (note?.message ?: "")
+            val shareBody = "$titleString\n$messageString"
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject))
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_choose)))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
