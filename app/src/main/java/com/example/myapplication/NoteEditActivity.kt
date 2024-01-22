@@ -32,6 +32,8 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
     private var noteDao: NoteDao? = null
     private var note: Note? = null
 
+    private lateinit var editTitle: EditText
+    private lateinit var editMessage: EditText
     private lateinit var locationManager: LocationManager
     private lateinit var tvLongitude: TextView
     private lateinit var tvLatitude: TextView
@@ -44,6 +46,9 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
         setSupportActionBar(findViewById(R.id.tbEdit))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+
+        editTitle = findViewById(R.id.editTitle)
+        editMessage = findViewById(R.id.editMessage)
 
         val editTitle = findViewById<EditText>(R.id.editTitle)
         val editMessage = findViewById<EditText>(R.id.editMessage)
@@ -148,9 +153,17 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == locationPermissionCode) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, resources.getString(R.string.permissions_granted), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.permissions_granted),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                Toast.makeText(this, resources.getString(R.string.permissions_denied), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.permissions_denied),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -163,11 +176,13 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
             .show()
     }
 
-    // TODO share not working when the note is not saved in database.
-    //  Same problem when you edit a share.
-    //  Only text share.
     private fun shareNote() {
-        if (note == null) {
+        val currentTitle = editTitle.text.toString()
+        val currentMessage = editMessage.text.toString()
+
+        val isModified = note?.title != currentTitle || note?.message != currentMessage
+
+        if (isModified) {
             Toast.makeText(this, getString(R.string.share_not_saved), Toast.LENGTH_LONG).show()
         } else {
             val sendTitle = getString(R.string.share_title) + (note?.title ?: "")
