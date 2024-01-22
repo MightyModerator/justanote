@@ -51,22 +51,38 @@
         android:maxLines="5"
         android:minHeight="96dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@id/editImage"
+        app:layout_constraintBottom_toTopOf="@id/editSublayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTitle" />
 
-    <!-- TODO: add Image Selection -->
-    <ImageView
-        android:id="@+id/editImage"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/editSublayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/img_desc"
-        android:src="@drawable/ic_notes"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/btnSave"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editMessage" />
+        app:layout_constraintTop_toBottomOf="@id/editMessage">
+
+        <ImageView
+            android:id="@+id/editPreviewImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_image"
+            />
+
+        <Button
+            android:id="@+id/editUploadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_camera_alt"
+            android:drawableTint="@color/white"
+            android:text="@string/upload_image" />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/btnSave"
