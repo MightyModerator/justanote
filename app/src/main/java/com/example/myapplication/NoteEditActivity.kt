@@ -1,18 +1,25 @@
 package com.example.myapplication
 
+import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.database.NotesDatabase
@@ -20,10 +27,15 @@ import com.example.myapplication.entities.Note
 import com.example.myapplication.util.ImageConverter
 
 
-class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
+class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, LocationListener {
 
     private var noteDao: NoteDao? = null
     private var note: Note? = null
+
+    private lateinit var locationManager: LocationManager
+    private lateinit var tvLongitude: TextView
+    private lateinit var tvLatitude: TextView
+    private val locationPermissionCode = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +49,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         val editMessage = findViewById<EditText>(R.id.editMessage)
         val btnSave = findViewById<Button>(R.id.btnSave)
         val btnUploadImage = findViewById<Button>(R.id.editUploadImage)
+        val btnGetLocation = findViewById<Button>(R.id.editGetLocation)
         val imagePreview = findViewById<ImageView>(R.id.editPreviewImage)
 
         val db = Room.databaseBuilder(
@@ -79,6 +92,8 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
                 imagePreview.setImageURI(uri)
             }
         btnUploadImage.setOnClickListener { selectImageIntent.launch("image/*") }
+        btnGetLocation.setOnClickListener { getLocation() }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -99,6 +114,44 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
             }
 
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun getLocation() {
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        if ((ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED)
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                locationPermissionCode
+            )
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
+    }
+
+    override fun onLocationChanged(location: Location) {
+        tvLongitude = findViewById(R.id.editLongitude)
+        tvLatitude = findViewById(R.id.editLatitude)
+        tvLongitude.text = location.longitude.toString()
+        tvLatitude.text = location.latitude.toString()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == locationPermissionCode) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, resources.getString(R.string.permissions_granted), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, resources.getString(R.string.permissions_denied), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

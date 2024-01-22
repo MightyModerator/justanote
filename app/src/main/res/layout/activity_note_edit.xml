@@ -1,77 +1,59 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="ExtraText">
+    android:orientation="vertical"
+    android:baselineAligned="false"
+    tools:context=".NoteEditActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbEdit"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/my_light_primary"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/white" />
 
     <TextView
         android:id="@+id/tvSecondText"
         style="@style/SubTitle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_subtitle"
-        app:layout_constraintBottom_toTopOf="@id/editTitle"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tbEdit" />
+        app:layout_constraintBottom_toTopOf="@id/editTitle" />
 
     <EditText
         android:id="@+id/editTitle"
         style="@style/EditText"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/hint_title"
         android:importantForAutofill="no"
-        android:inputType="text"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@id/editMessage"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSecondText" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/editMessage"
         style="@style/EditText"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/hint_message"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:maxLines="5"
-        android:minHeight="96dp"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@id/editSublayout"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTitle" />
+        android:lines="5" />
 
     <LinearLayout
-        android:id="@+id/editSublayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/btnSave"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editMessage">
+        android:layout_margin="@dimen/margin_medium"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/editPreviewImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_image"
-            />
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_image" />
 
         <Button
             android:id="@+id/editUploadImage"
@@ -84,17 +66,66 @@
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/btnSave"
-        style="@style/Button"
-        android:layout_width="0dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:text="@string/longitude"
+        />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/editLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="0.0"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/latitude"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/editLatitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="0.0"
+        />
+
+
+    <Button
+        android:id="@+id/editGetLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableLeft="@drawable/ic_gps"
+        android:drawableTint="@color/white"
+        android:text="@string/get_location" />
+
+    <!-- This LinearLayout is for moving the button to the bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/Button"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/save" />
+
+    </LinearLayout>
+</LinearLayout>

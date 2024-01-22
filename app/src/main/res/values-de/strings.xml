@@ -27,5 +27,10 @@
     <string name="compose_shortcut_long_label1">Neue Notiz hinzufügen</string>
     <string name="compose_disabled_message1">Abkürzung deaktiviert</string>
     <string name="upload_image">Bild hochladen</string>
+    <string name="get_location">Standort ermitteln</string>
+    <string name="longitude">Längengrad</string>
+    <string name="latitude">Breitengrad</string>
+    <string name="permissions_granted">Berechtigungen erteilt</string>
+    <string name="permissions_denied">Berechtigungen verweigert</string>
 
 </resources>
