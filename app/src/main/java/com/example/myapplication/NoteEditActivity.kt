@@ -49,9 +49,8 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
 
         editTitle = findViewById(R.id.editTitle)
         editMessage = findViewById(R.id.editMessage)
-
-        val editTitle = findViewById<EditText>(R.id.editTitle)
-        val editMessage = findViewById<EditText>(R.id.editMessage)
+        tvLongitude = findViewById(R.id.editLongitude)
+        tvLatitude = findViewById(R.id.editLatitude)
         val btnSave = findViewById<Button>(R.id.btnSave)
         val btnUploadImage = findViewById<Button>(R.id.editUploadImage)
         val btnGetLocation = findViewById<Button>(R.id.editGetLocation)
@@ -68,6 +67,8 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
             val bitmap = note?.image?.let { ImageConverter.convertStringToBase64(it) }
             editTitle?.setText(note?.title)
             editMessage?.setText(note?.message)
+            tvLongitude.setText(note?.longitude)
+            tvLatitude.setText(note?.latitude)
             imagePreview.setImageBitmap(bitmap)
         }
 
@@ -75,15 +76,18 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
             val title = editTitle?.text.toString()
             val message = editMessage?.text.toString()
             val imageString = ImageConverter.convertDrawableToString(imagePreview.drawable)
+            val longitude = tvLongitude?.text.toString()
+            val latitude = tvLatitude?.text.toString()
 
             if (note != null) {
                 note!!.title = title
                 note!!.message = message
                 note!!.image = imageString
+                note!!.longitude = longitude
+                note!!.latitude = latitude
                 noteDao?.update(note!!)
             } else {
-
-                noteDao!!.insertAll(Note(title, message, imageString))
+                noteDao!!.insertAll(Note(title, message, imageString, longitude, latitude))
             }
 
             // TODO: @Edwin Add current note here, instead of list
@@ -129,6 +133,8 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
 
     private fun startMapsActivity() {
         val intent = Intent(this, MapsActivity::class.java)
+        intent.putExtra("longitude", tvLongitude.text)
+        intent.putExtra("latitude", tvLatitude.text)
         startActivity(intent)
     }
 
