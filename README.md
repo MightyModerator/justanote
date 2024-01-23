@@ -32,3 +32,5 @@ Own functionalities:
 
 - Shortcut for add a new note
 - Share a saved note
+
+![image info](./screenshots/app-start-screen.png)
