@@ -63,9 +63,9 @@ class ListActivity : AppCompatActivity(){
                 noteAdapter.notifyItemRemoved(viewHolder.adapterPosition)
                 noteDao.delete(deletedNote)
                 noteAdapter.notifyDataSetChanged()
-                Snackbar.make(rvNotes, "Deleted " + deletedNote.title, Snackbar.LENGTH_LONG)
+                Snackbar.make(rvNotes, resources.getString(R.string.note_deleted) + ": " + deletedNote.title, Snackbar.LENGTH_LONG)
                     .setAction(
-                        "Undo",
+                        resources.getString(R.string.undo),
                         View.OnClickListener {
                             noteAdapter.notes.add(position, deletedNote)
                             noteAdapter.notifyItemInserted(position)
