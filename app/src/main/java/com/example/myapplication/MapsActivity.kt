@@ -61,7 +61,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
+        // TODO: change val and add title from database
+        // Add a marker to the location of the note and move the camera
         val wifi = LatLng(latitude, longitude)
         mMap.addMarker(
             MarkerOptions()
