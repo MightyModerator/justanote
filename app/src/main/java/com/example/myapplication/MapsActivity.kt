@@ -14,7 +14,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-
+    private var longitude: Double = 0.0
+    private var latitude: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setSupportActionBar(findViewById(R.id.tbMap))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+
+        longitude = intent.getStringExtra("longitude")?.toDouble()!!
+        latitude = intent.getStringExtra("latitude")?.toDouble()!!
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -58,7 +62,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val wifi = LatLng(47.10376, 15.43589)
+        val wifi = LatLng(latitude, longitude)
         mMap.addMarker(
             MarkerOptions()
                 .position(wifi)

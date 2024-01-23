@@ -9,6 +9,8 @@ import java.util.Base64
 data class Note(
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "message") var message: String,
-    @ColumnInfo(name="image") var image: String,
+    @ColumnInfo(name = "image") var image: String,
+    @ColumnInfo(name = "longitude") var longitude: String,
+    @ColumnInfo(name = "latitude") var latitude: String,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 )
