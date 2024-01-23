@@ -61,7 +61,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
         ).allowMainThreadQueries().build()
         noteDao = db.noteDao()
 
-        val id = intent.getLongExtra("id", -1)
+        val id = intent.getIntExtra("id", -1)
         if (id >= 0) {
             note = noteDao!!.loadAllByIds(id.toInt())[0]
             val bitmap = note?.image?.let { ImageConverter.convertStringToBase64(it) }

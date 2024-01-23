@@ -6,18 +6,22 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.myapplication.adapters.NoteAdapter
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.database.NotesDatabase
+import com.example.myapplication.entities.Note
+import com.google.android.material.snackbar.Snackbar
 
 
-class ListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
-    private var noteDao: NoteDao? = null
-    private var adapter: NoteAdapter? = null
+class ListActivity : AppCompatActivity(){
+    private lateinit var noteDao: NoteDao
+    private lateinit var noteAdapter: NoteAdapter
+    private lateinit var rvNotes: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,20 +33,53 @@ class ListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             applicationContext, NotesDatabase::class.java, "notes"
         ).allowMainThreadQueries().build()
         noteDao = db.noteDao()
+        rvNotes = findViewById(R.id.lvNotes)
+        noteAdapter = NoteAdapter(this, noteDao!!.getAll())
+        rvNotes.adapter = noteAdapter
 
-        val lvNotes = findViewById<ListView>(R.id.lvNotes)
+        noteAdapter.setOnClickListener(object :
+            NoteAdapter.OnClickListener {
+            override fun onClick(position: Int) {
+                val intent = Intent(this@ListActivity, NoteEditActivity::class.java)
+                intent.putExtra("id", noteAdapter.notes.get(position).id)
+                startActivity(intent)
+            }
+        })
 
-        adapter = NoteAdapter(this, noteDao!!.getAll())
-        lvNotes.adapter = adapter
-        lvNotes.onItemClickListener = this
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val deletedNote: Note =
+                    noteAdapter.notes.get(viewHolder.adapterPosition)
+                val position = viewHolder.adapterPosition
+                noteAdapter.notes.removeAt(viewHolder.adapterPosition)
+                noteAdapter.notifyItemRemoved(viewHolder.adapterPosition)
+                noteDao.delete(deletedNote)
+                noteAdapter.notifyDataSetChanged()
+                Snackbar.make(rvNotes, "Deleted " + deletedNote.title, Snackbar.LENGTH_LONG)
+                    .setAction(
+                        "Undo",
+                        View.OnClickListener {
+                            noteAdapter.notes.add(position, deletedNote)
+                            noteAdapter.notifyItemInserted(position)
+                            noteDao.insertAll(deletedNote)
+                        }).show()
+            }
+        }).attachToRecyclerView(rvNotes)
 
     }
 
     override fun onResume() {
         super.onResume()
-
-        adapter?.notes = noteDao!!.getAll()
-        adapter?.notifyDataSetChanged()
+        noteAdapter.notes = noteDao!!.getAll()
+        noteAdapter.notifyDataSetChanged()
 
     }
 
@@ -59,11 +96,5 @@ class ListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val intent = Intent(this, NoteEditActivity::class.java)
-        intent.putExtra("id", id)
-        startActivity(intent)
     }
 }

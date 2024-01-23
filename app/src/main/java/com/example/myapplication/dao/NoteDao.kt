@@ -11,7 +11,7 @@ import com.example.myapplication.entities.Note
 
 interface NoteDao {
     @Query("SELECT * FROM notes")
-    fun getAll(): List<Note>
+    fun getAll(): MutableList<Note>
 
     @Insert
     fun insertAll(vararg notes: Note)
@@ -20,7 +20,7 @@ interface NoteDao {
     fun delete(note: Note)
 
     @Query("SELECT * FROM notes WHERE id IS (:id)")
-    fun loadAllByIds(id: Int): List<Note>
+    fun loadAllByIds(id: Int): MutableList<Note>
 
     @Update
     fun update(note: Note)
