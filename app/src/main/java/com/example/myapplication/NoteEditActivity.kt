@@ -108,6 +108,11 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
                 true
             }
 
+            R.id.location -> {
+                startMapsActivity()
+                true
+            }
+
             R.id.del -> {
                 showDeleteDialog()
                 true
@@ -120,6 +125,11 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun startMapsActivity() {
+        val intent = Intent(this, MapsActivity::class.java)
+        startActivity(intent)
     }
 
     private fun getLocation() {

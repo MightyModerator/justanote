@@ -2,15 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/location"
+        android:icon="@drawable/ic_my_location"
+        android:title="Location"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/share"
-        android:title="@string/share"
         android:icon="@drawable/ic_share"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/share"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/del"
-        android:title="@string/del"
         android:icon="@drawable/ic_delete_outline"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/del"
+        app:showAsAction="ifRoom" />
 
 
 </menu>
