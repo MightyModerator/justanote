@@ -1,5 +1,7 @@
+// Declare the package name for the Kotlin file, which is part of the namespace for the app.
 package com.example.myapplication
 
+// Import various classes needed for the app's functionality.
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -23,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.room.Room
+// Import classes related to the app's database and utility functions.
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.database.NotesDatabase
 import com.example.myapplication.entities.Note
@@ -35,9 +38,11 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
 
 
+// Define NoteEditActivity class which extends AppCompatActivity and implements interfaces for dialog and location updates.
 class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
 
     // Note variables
+    // Declare variables for data access object, note entity, UI components, and permission code.
     private var noteDao: NoteDao? = null
     private var note: Note? = null
 
@@ -58,9 +63,12 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         Manifest.permission.ACCESS_FINE_LOCATION
     )
 
+    // Override the onCreate function to initialize the activity.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Set the content view to the layout defined in activity_note_edit.xml.
         setContentView(R.layout.activity_note_edit)
+        // Set up the toolbar with navigation and custom icon.
         setSupportActionBar(findViewById(R.id.tbEdit))
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -90,6 +98,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
     }
 
     private fun initializeViews() {
+        // Initialize UI components by finding them in the layout.
         editTitle = findViewById(R.id.editTitle)
         editMessage = findViewById(R.id.editMessage)
         tvLongitude = findViewById(R.id.editLongitude)
@@ -101,6 +110,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
     }
 
     private fun initializeDatabase() {
+        // Setup the database and data access object.
         val db = Room.databaseBuilder(
             applicationContext, NotesDatabase::class.java, "notes"
         ).allowMainThreadQueries().build()
@@ -108,6 +118,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
     }
 
     private fun getExistingNote() {
+        // Check if there is a note ID passed with the intent and load the note if it exists.
         val id = intent.getIntExtra("id", -1)
         if (id >= 0) {
             note = noteDao?.loadAllByIds(id.toInt())?.firstOrNull()
@@ -123,12 +134,14 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
     }
 
     private fun saveNote() {
+        // Gather all information from the input fields.
         val title = editTitle.text.toString()
         val message = editMessage.text.toString()
         val imageString = ImageConverter.convertDrawableToString(imagePreview.drawable)
         val longitude = tvLongitude.text.toString()
         val latitude = tvLatitude.text.toString()
 
+        // Update an existing note or create a new one in the database.
         note?.apply {
             this.title = title
             this.message = message
@@ -138,6 +151,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
             noteDao?.update(this)
         } ?: noteDao?.insertAll(Note(title, message, imageString, longitude, latitude))
 
+        // Close the activity after saving.
         finish()
     }
 
@@ -150,10 +164,11 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         startActivity(intent)
     }
 
-    // Suppress Permission, because IDE does not recognize permission check in other method
+    // Suppresses the MissingPermission warning because the permission check is done in another method.
     @SuppressLint("MissingPermission")
     private fun getLocation() {
         if (checkPermissions()) {
+            // If permissions are granted, get the current location with high accuracy.
             fusedLocationClient.getCurrentLocation(
                 LocationRequest.PRIORITY_HIGH_ACCURACY,
                 object : CancellationToken() {
@@ -162,13 +177,15 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
 
                     override fun isCancellationRequested() = false
                 }).addOnSuccessListener { location: Location? ->
-                if (location == null)
+                    // If the location is null, show a toast message indicating permission denial.
+                    if (location == null)
                     Toast.makeText(
                         this,
                         resources.getString(R.string.permissions_denied),
                         Toast.LENGTH_SHORT
                     ).show()
                 else {
+                        // If the location is not null, update the UI with the new longitude and latitude.
                     tvLongitude = findViewById(R.id.editLongitude)
                     tvLatitude = findViewById(R.id.editLatitude)
                     tvLongitude.text = location?.longitude.toString()
@@ -177,11 +194,13 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
 
             }
         } else {
+            // If permissions are not granted, request them.
             requestPermissions()
         }
     }
 
     // check for permission
+    // Checks if both coarse and fine location permissions have been granted.
     private fun checkPermissions(): Boolean {
         return ActivityCompat.checkSelfPermission(
             this, Manifest.permission.ACCESS_COARSE_LOCATION
@@ -192,17 +211,21 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
     }
 
     // Request location permissions
+    // Requests location permissions using the new permission request API.
     private fun requestPermissions() {
         permissionRequest.launch(locationPermissions)
     }
 
     // Permission result
+    // Handles the result of the permission request.
     private val permissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            // Check if all requested permissions have been granted.
             val granted = permissions.entries.all {
                 it.value == true
             }
             if (granted) {
+                // If permissions are granted, show a toast and attempt to get the location again.
                 Toast.makeText(
                     this,
                     resources.getString(R.string.permissions_granted),
@@ -212,6 +235,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
                 // Tries to get location again, after permissions are granted
                 getLocation()
             } else {
+                // If permissions are denied, show a toast message.
                 Toast.makeText(
                     this,
                     resources.getString(R.string.permissions_denied),
@@ -220,6 +244,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
             }
         }
 
+    // Shows a dialog to confirm deletion of an item.
     private fun showDeleteDialog() {
         AlertDialog.Builder(this)
             .setMessage(getString(R.string.confirm_delete))
@@ -228,15 +253,19 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
             .show()
     }
 
+    // Shares the current note if it has not been modified.
     private fun shareNote() {
         val currentTitle = editTitle.text.toString()
         val currentMessage = editMessage.text.toString()
 
+        // Check if the note has been modified since it was last saved.
         val isModified = note?.title != currentTitle || note?.message != currentMessage
 
         if (isModified) {
+            // If modified, show a toast message indicating that the note hasn't been saved yet.
             Toast.makeText(this, getString(R.string.share_not_saved), Toast.LENGTH_LONG).show()
         } else {
+            // If not modified, prepare and send the share intent with the note's title and message.
             val sendTitle = getString(R.string.share_title) + (note?.title ?: "")
             val sendMessage = getString(R.string.share_message) + (note?.message ?: "")
             val shareBody = "$sendTitle\n$sendMessage"
@@ -249,6 +278,7 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         }
     }
 
+    // Handles action bar item clicks.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -256,25 +286,30 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
                 true
             }
 
+            // If the location button is pressed, start the MapsActivity.
             R.id.location -> {
                 startMapsActivity()
                 true
             }
 
+            // If the delete button is pressed, show the delete confirmation dialog.
             R.id.del -> {
                 showDeleteDialog()
                 true
             }
 
+            // If the share button is pressed, execute the shareNote function.
             R.id.share -> {
                 shareNote()
                 true
             }
 
+            // Default case: pass the event to the superclass.
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    // Handles the results of permission requests.
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -283,17 +318,20 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    // Inflates the options menu.
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_edit, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
+    // Handles clicks on the dialog interface.
     override fun onClick(p0: DialogInterface?, p1: Int) {
         note?.let {
             noteDao?.delete(it)
 
             Toast.makeText(this, R.string.note_deleted, Toast.LENGTH_LONG).show()
 
+            // Finish the activity after deletion.
             finish()
         }
     }
