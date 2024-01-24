@@ -33,35 +33,44 @@ class ListActivity : AppCompatActivity() {
         // Set up the main toolbar.
         setSupportActionBar(findViewById(R.id.tbMain))
 
-        // Get reference and hide the no note text view initially.
+        rvNotes = findViewById(R.id.lvNotes)
         noNoteTextView = findViewById(R.id.noNote)
         noNoteTextView.visibility = View.GONE
-        // Get reference and hide the no note text view initially.
+
+        // Initializes database
+        initDatabase()
+        // Initializes NoteAdapter
+        initAdapter()
+        // Added swipe right to delete functionality
+        swipeToDeleteListener()
+    }
+
+    // Initializes database
+    fun initDatabase() {
         val db = Room.databaseBuilder(
             applicationContext, NotesDatabase::class.java, "notes"
         ).allowMainThreadQueries().build()
-        // Assign the note DAO from the database.
         noteDao = db.noteDao()
-        // Setup the RecyclerView with the note adapter.
-        rvNotes = findViewById(R.id.lvNotes)
-        noteAdapter = NoteAdapter(this, noteDao!!.getAll())
+    }
+
+    // Initializes NoteAdapter
+    fun initAdapter() {
+        noteAdapter = NoteAdapter(this, noteDao.getAll())
         rvNotes.adapter = noteAdapter
 
-        // Define click listener for the note items.
         noteAdapter.setOnClickListener(object :
             NoteAdapter.OnClickListener {
             override fun onClick(position: Int) {
-                // When a note is clicked, start the NoteEditActivity with the note id.
                 val intent = Intent(this@ListActivity, NoteEditActivity::class.java)
                 intent.putExtra("id", noteAdapter.notes.get(position).id)
                 startActivity(intent)
             }
         })
+    }
 
-
-       // Item touch helper for swipe actions on RecyclerView items.
+    fun swipeToDeleteListener() {
+        // Swipe right to delete note helper. RecyclerView is used to enable this functionality
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            // Not used, but required to override.
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -71,7 +80,7 @@ class ListActivity : AppCompatActivity() {
             }
             // Handle the swipe for each note.
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // Get the note that was swiped and remove it from the adapter.
+                // Saves deleted note to variable, if user decides to undo
                 val deletedNote: Note =
                     noteAdapter.notes.get(viewHolder.adapterPosition)
                 val position = viewHolder.adapterPosition
@@ -94,9 +103,8 @@ class ListActivity : AppCompatActivity() {
                             noteDao.insertAll(deletedNote)
                         }).show()
             }
-        // Attach the ItemTouchHelper to the RecyclerView.
+            // Attach the ItemTouchHelper to the RecyclerView.
         }).attachToRecyclerView(rvNotes)
-
     }
 
     override fun onResume() {
@@ -111,8 +119,6 @@ class ListActivity : AppCompatActivity() {
         } else {
             noNoteTextView.visibility = View.GONE
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -128,8 +134,8 @@ class ListActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.add), Toast.LENGTH_LONG).show()
 
             val intent = Intent(this, NoteEditActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
