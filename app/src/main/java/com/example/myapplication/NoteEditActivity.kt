@@ -90,14 +90,14 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
     }
 
     private fun initializeViews() {
-        editTitle = findViewById<EditText>(R.id.editTitle)
-        editMessage = findViewById<EditText>(R.id.editMessage)
-        tvLongitude = findViewById<TextView>(R.id.editLongitude)
-        tvLatitude = findViewById<TextView>(R.id.editLatitude)
-        btnSave = findViewById<Button>(R.id.btnSave)
-        btnUploadImage = findViewById<Button>(R.id.editUploadImage)
-        btnGetLocation = findViewById<Button>(R.id.editGetLocation)
-        imagePreview = findViewById<ImageView>(R.id.editPreviewImage)
+        editTitle = findViewById(R.id.editTitle)
+        editMessage = findViewById(R.id.editMessage)
+        tvLongitude = findViewById(R.id.editLongitude)
+        tvLatitude = findViewById(R.id.editLatitude)
+        btnSave = findViewById(R.id.btnSave)
+        btnUploadImage = findViewById(R.id.editUploadImage)
+        btnGetLocation = findViewById(R.id.editGetLocation)
+        imagePreview = findViewById(R.id.editPreviewImage)
     }
 
     private fun initializeDatabase() {
