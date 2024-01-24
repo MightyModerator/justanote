@@ -39,4 +39,5 @@
         <activity android:name=".MapsActivity" />
     </application>
 
+
 </manifest>

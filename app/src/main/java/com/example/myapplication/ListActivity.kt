@@ -110,6 +110,8 @@ class ListActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.add), Toast.LENGTH_LONG).show()
 
             val intent = Intent(this, NoteEditActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)

@@ -1,6 +1,8 @@
 package com.example.myapplication
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -25,110 +27,118 @@ import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.database.NotesDatabase
 import com.example.myapplication.entities.Note
 import com.example.myapplication.util.ImageConverter
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 
 
-class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, LocationListener {
+class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener {
 
+    // Note variables
     private var noteDao: NoteDao? = null
     private var note: Note? = null
 
+    // View variables
     private lateinit var editTitle: EditText
     private lateinit var editMessage: EditText
-    private lateinit var locationManager: LocationManager
     private lateinit var tvLongitude: TextView
     private lateinit var tvLatitude: TextView
-    private val locationPermissionCode = 2
+    private lateinit var btnSave: Button
+    private lateinit var btnUploadImage: Button
+    private lateinit var btnGetLocation: Button
+    private lateinit var imagePreview: ImageView
+
+    // Location variables
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var locationPermissions = arrayOf(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_edit)
-
         setSupportActionBar(findViewById(R.id.tbEdit))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
-
-        editTitle = findViewById(R.id.editTitle)
-        editMessage = findViewById(R.id.editMessage)
-        tvLongitude = findViewById(R.id.editLongitude)
-        tvLatitude = findViewById(R.id.editLatitude)
-        val btnSave = findViewById<Button>(R.id.btnSave)
-        val btnUploadImage = findViewById<Button>(R.id.editUploadImage)
-        val btnGetLocation = findViewById<Button>(R.id.editGetLocation)
-        val imagePreview = findViewById<ImageView>(R.id.editPreviewImage)
-
-        val db = Room.databaseBuilder(
-            applicationContext, NotesDatabase::class.java, "notes"
-        ).allowMainThreadQueries().build()
-        noteDao = db.noteDao()
-
-        val id = intent.getIntExtra("id", -1)
-        if (id >= 0) {
-            note = noteDao!!.loadAllByIds(id.toInt())[0]
-            val bitmap = note?.image?.let { ImageConverter.convertStringToBase64(it) }
-            editTitle?.setText(note?.title)
-            editMessage?.setText(note?.message)
-            tvLongitude.setText(note?.longitude)
-            tvLatitude.setText(note?.latitude)
-            imagePreview.setImageBitmap(bitmap)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         }
 
-        btnSave.setOnClickListener {
-            val title = editTitle?.text.toString()
-            val message = editMessage?.text.toString()
-            val imageString = ImageConverter.convertDrawableToString(imagePreview.drawable)
-            val longitude = tvLongitude?.text.toString()
-            val latitude = tvLatitude?.text.toString()
+        // Initialize elements of layout file
+        initializeViews()
+        // Initialize database and get note data access object
+        initializeDatabase()
+        // Checks if note already exists and set data
+        getExistingNote()
 
-            if (note != null) {
-                note!!.title = title
-                note!!.message = message
-                note!!.image = imageString
-                note!!.longitude = longitude
-                note!!.latitude = latitude
-                noteDao?.update(note!!)
-            } else {
-                noteDao!!.insertAll(Note(title, message, imageString, longitude, latitude))
-            }
-
-            // TODO: @Edwin Add current note here, instead of list
-            // Toast.makeText(this, noteDao!!.getAll().toString(), Toast.LENGTH_LONG).show()
-
-            finish()
-        }
-
+        // Image selection
         val selectImageIntent =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
                 imagePreview.setImageURI(uri)
             }
         btnUploadImage.setOnClickListener { selectImageIntent.launch("image/*") }
+
+        // Location button
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         btnGetLocation.setOnClickListener { getLocation() }
 
+        // Saves note on button click
+        btnSave.setOnClickListener { saveNote() }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                true
-            }
+    private fun initializeViews() {
+        editTitle = findViewById<EditText>(R.id.editTitle)
+        editMessage = findViewById<EditText>(R.id.editMessage)
+        tvLongitude = findViewById<TextView>(R.id.editLongitude)
+        tvLatitude = findViewById<TextView>(R.id.editLatitude)
+        btnSave = findViewById<Button>(R.id.btnSave)
+        btnUploadImage = findViewById<Button>(R.id.editUploadImage)
+        btnGetLocation = findViewById<Button>(R.id.editGetLocation)
+        imagePreview = findViewById<ImageView>(R.id.editPreviewImage)
+    }
 
-            R.id.location -> {
-                startMapsActivity()
-                true
-            }
+    private fun initializeDatabase() {
+        val db = Room.databaseBuilder(
+            applicationContext, NotesDatabase::class.java, "notes"
+        ).allowMainThreadQueries().build()
+        noteDao = db.noteDao()
+    }
 
-            R.id.del -> {
-                showDeleteDialog()
-                true
+    private fun getExistingNote() {
+        val id = intent.getIntExtra("id", -1)
+        if (id >= 0) {
+            note = noteDao?.loadAllByIds(id.toInt())?.firstOrNull()
+            note?.let {
+                val bitmap = it.image?.let { img -> ImageConverter.convertStringToBase64(img) }
+                editTitle.setText(it.title)
+                editMessage.setText(it.message)
+                tvLongitude.text = it.longitude
+                tvLatitude.text = it.latitude
+                imagePreview.setImageBitmap(bitmap)
             }
-
-            R.id.share -> {
-                shareNote()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun saveNote() {
+        val title = editTitle.text.toString()
+        val message = editMessage.text.toString()
+        val imageString = ImageConverter.convertDrawableToString(imagePreview.drawable)
+        val longitude = tvLongitude.text.toString()
+        val latitude = tvLatitude.text.toString()
+
+        note?.apply {
+            this.title = title
+            this.message = message
+            this.image = imageString
+            this.longitude = longitude
+            this.latitude = latitude
+            noteDao?.update(this)
+        } ?: noteDao?.insertAll(Note(title, message, imageString, longitude, latitude))
+
+        finish()
     }
 
     private fun startMapsActivity() {
@@ -140,42 +150,67 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
         startActivity(intent)
     }
 
+    // Suppress Permission, because IDE does not recognize permission check in other method
+    @SuppressLint("MissingPermission")
     private fun getLocation() {
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        if ((ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED)
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                locationPermissionCode
-            )
+        if (checkPermissions()) {
+            fusedLocationClient.getCurrentLocation(
+                LocationRequest.PRIORITY_HIGH_ACCURACY,
+                object : CancellationToken() {
+                    override fun onCanceledRequested(p0: OnTokenCanceledListener) =
+                        CancellationTokenSource().token
+
+                    override fun isCancellationRequested() = false
+                }).addOnSuccessListener { location: Location? ->
+                if (location == null)
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.permissions_denied),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                else {
+                    tvLongitude = findViewById(R.id.editLongitude)
+                    tvLatitude = findViewById(R.id.editLatitude)
+                    tvLongitude.text = location?.longitude.toString()
+                    tvLatitude.text = location?.latitude.toString()
+                }
+
+            }
+        } else {
+            requestPermissions()
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
     }
 
-    override fun onLocationChanged(location: Location) {
-        tvLongitude = findViewById(R.id.editLongitude)
-        tvLatitude = findViewById(R.id.editLatitude)
-        tvLongitude.text = location.longitude.toString()
-        tvLatitude.text = location.latitude.toString()
+    // check for permission
+    private fun checkPermissions(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == locationPermissionCode) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    // Request location permissions
+    private fun requestPermissions() {
+        permissionRequest.launch(locationPermissions)
+    }
+
+    // Permission result
+    private val permissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val granted = permissions.entries.all {
+                it.value == true
+            }
+            if (granted) {
                 Toast.makeText(
                     this,
                     resources.getString(R.string.permissions_granted),
                     Toast.LENGTH_SHORT
                 ).show()
+
+                // Tries to get location again, after permissions are granted
+                getLocation()
             } else {
                 Toast.makeText(
                     this,
@@ -184,7 +219,6 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
                 ).show()
             }
         }
-    }
 
     private fun showDeleteDialog() {
         AlertDialog.Builder(this)
@@ -213,6 +247,40 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_choose)))
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+
+            R.id.location -> {
+                startMapsActivity()
+                true
+            }
+
+            R.id.del -> {
+                showDeleteDialog()
+                true
+            }
+
+            R.id.share -> {
+                shareNote()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
