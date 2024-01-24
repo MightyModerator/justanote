@@ -14,11 +14,17 @@
         android:background="@color/my_light_primary"
         app:titleTextColor="@color/white" />
 
+    <TextView
+        android:id="@+id/noNote"
+        style="@style/SubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/noNote" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lvNotes"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>

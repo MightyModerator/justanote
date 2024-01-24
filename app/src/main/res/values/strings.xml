@@ -33,6 +33,7 @@
     <string name="permissions_granted">Permissions Granted</string>
     <string name="permissions_denied">Permissions Denied</string>
     <string name="undo">Undo</string>
+    <string name="noNote">So far you have no notes …</string>
 
 
 </resources>

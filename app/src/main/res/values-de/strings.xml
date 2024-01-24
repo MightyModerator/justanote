@@ -33,5 +33,7 @@
     <string name="permissions_granted">Berechtigungen erteilt</string>
     <string name="permissions_denied">Berechtigungen verweigert</string>
     <string name="undo">Rückgängig</string>
+    <string name="noNote">Bis jetzt hast du keine Notizen …</string>
+
 
 </resources>

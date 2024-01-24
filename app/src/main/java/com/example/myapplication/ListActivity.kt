@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,16 +18,20 @@ import com.example.myapplication.entities.Note
 import com.google.android.material.snackbar.Snackbar
 
 
-class ListActivity : AppCompatActivity(){
+class ListActivity : AppCompatActivity() {
     private lateinit var noteDao: NoteDao
     private lateinit var noteAdapter: NoteAdapter
     private lateinit var rvNotes: RecyclerView
+    private lateinit var noNoteTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
         setSupportActionBar(findViewById(R.id.tbMain))
+
+        noNoteTextView = findViewById(R.id.noNote)
+        noNoteTextView.visibility = View.GONE
 
         val db = Room.databaseBuilder(
             applicationContext, NotesDatabase::class.java, "notes"
@@ -46,6 +50,8 @@ class ListActivity : AppCompatActivity(){
             }
         })
 
+
+
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -63,7 +69,11 @@ class ListActivity : AppCompatActivity(){
                 noteAdapter.notifyItemRemoved(viewHolder.adapterPosition)
                 noteDao.delete(deletedNote)
                 noteAdapter.notifyDataSetChanged()
-                Snackbar.make(rvNotes, resources.getString(R.string.note_deleted) + ": " + deletedNote.title, Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    rvNotes,
+                    resources.getString(R.string.note_deleted) + ": " + deletedNote.title,
+                    Snackbar.LENGTH_LONG
+                )
                     .setAction(
                         resources.getString(R.string.undo),
                         View.OnClickListener {
@@ -78,8 +88,15 @@ class ListActivity : AppCompatActivity(){
 
     override fun onResume() {
         super.onResume()
-        noteAdapter.notes = noteDao!!.getAll()
+        val notesList = noteDao.getAll()
+        noteAdapter.notes = notesList
         noteAdapter.notifyDataSetChanged()
+        if (notesList.isEmpty()) {
+            noNoteTextView.visibility = View.VISIBLE
+        } else {
+            noNoteTextView.visibility = View.GONE
+        }
+
 
     }
 
