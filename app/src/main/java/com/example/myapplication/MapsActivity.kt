@@ -16,6 +16,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private var longitude: Double = 0.0
     private var latitude: Double = 0.0
+    private var title: String = "Default Title"
+    private var message: String = "Default Message"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         longitude = intent.getStringExtra("longitude")?.toDouble()!!
         latitude = intent.getStringExtra("latitude")?.toDouble()!!
+        title = intent.getStringExtra("title") ?: "Default Title"
+        message = intent.getStringExtra("message") ?: "Default Message"
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -54,22 +60,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera.
+     * This is where we add markers and move the camera.
      * This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // TODO: change val and add title from database
         // Add a marker to the location of the note and move the camera
-        val wifi = LatLng(latitude, longitude)
+        val noteLoc = LatLng(latitude, longitude)
+        val cameraZoom = 10f
         mMap.addMarker(
             MarkerOptions()
-                .position(wifi)
-                .title("Wifi Steiermark")
+                .position(noteLoc)
+                .title(title)
+                .snippet(message)
         )
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(wifi))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(noteLoc, cameraZoom))
     }
 
 }

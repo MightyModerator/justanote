@@ -2,7 +2,7 @@
     <string name="app_name">Just a note</string>
     <string name="app_subtitle">Keep it simple</string>
     <string name="app_description">You will never use another notes app. We promise!</string>
-    <string name="login">Login</string>
+    <string name="login">Let\'s get started</string>
     <string name="signed_in">Signed in</string>
     <string name="hint_title">Title</string>
     <string name="hint_message">Description</string>

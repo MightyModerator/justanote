@@ -2,7 +2,7 @@
     <string name="app_name">Nur eine Notiz</string>
     <string name="app_subtitle">Halten wir es einfach</string>
     <string name="app_description">Du wirst nie wieder einen andere Notizen App verwenden. Wir versprechen es!</string>
-    <string name="login">Anmelden</string>
+    <string name="login">Lass uns anfangen</string>
     <string name="signed_in">Angemeldet</string>
     <string name="hint_title">Titel</string>
     <string name="hint_message">Beschreibung</string>

@@ -135,6 +135,8 @@ class NoteEditActivity : AppCompatActivity(), DialogInterface.OnClickListener, L
         val intent = Intent(this, MapsActivity::class.java)
         intent.putExtra("longitude", tvLongitude.text)
         intent.putExtra("latitude", tvLatitude.text)
+        intent.putExtra("title", editTitle.text.toString())
+        intent.putExtra("message", editMessage.text.toString())
         startActivity(intent)
     }
 

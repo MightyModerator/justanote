@@ -1,4 +1,4 @@
-# Just another notes app
+# Just a(nother) notes app
 
 A notes app that saves images and GPS data in addition to text entries.
 
@@ -57,6 +57,12 @@ local.properties file._
 Insert the following code, replacing YOUR_API_KEY with your own API key: `MAPS_API_KEY=YOUR_API_KEY`
 
 ## About the build
+
+## SDK
+
+minSdk = 24
+targetSdk = 34
+compileSdk = 34
 
 ### Gradle-Plugins
 
