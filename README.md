@@ -8,7 +8,7 @@ Developed by EP and EH.
 
 ![image info](./screenshots/app-start-screen.png)
 ![image info](./screenshots/create-new-note.png)
-![image info](./screenshots/liste-notes.png)
+![image info](./screenshots/list-notes.png)
 
 ## Project specifications
 
