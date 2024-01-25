@@ -92,9 +92,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 .position(noteLoc)
                 .title(title)
                 .snippet(message)
+                .icon(BitmapDescriptorFactory.from-Resource(R.drawable.ic_marker_location)
         )
         // Move the camera to the note location with specified zoom level.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(noteLoc, cameraZoom))
     }
 
 }
+
