@@ -34,6 +34,7 @@ There are no specifications for the GUI.
 - App saves the location (latitude, longitude)
 - App saves images in the database
 - Click on database entry to open detailed view of the respective entry
+- In app list feature "swipe to delete" added
 
 ### Additional functionalities:
 
