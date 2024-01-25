@@ -127,3 +127,13 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
+
+### Developed by
+
+Edwin Pichler, Erik Handler, Michael Tausch
+
+-Copyright (c) 2024 MIT Licence-
+
+https://github.com/ddbpichler
+https://github.com/Sportfreunderik
+https://github.com/MightyModerator
