@@ -2,15 +2,13 @@
 
 A notes app that saves images and GPS data in addition to text entries.
 
-Developed by EP and EH.
-
 ## App Overview
-### App Start Screen
+
 ![image info](./screenshots/app-start-screen.png)
-### Create new Note Screen
 ![image info](./screenshots/create-new-note.png)
-### List all Notes Screen
 ![image info](./screenshots/list-notes.png)
+![image info](./screenshots/share-a-note.png)
+![image info](./screenshots/map-note.png)
 
 ## Project specifications
 
@@ -34,22 +32,21 @@ There are no specifications for the GUI.
 - App saves the location (latitude, longitude)
 - App saves images in the database
 - Click on database entry to open detailed view of the respective entry
-- In app list feature "swipe to delete" added
 
 ### Additional functionalities:
 
 - App shortcut for add a new note
 - Send simple data to other apps with Android Sharesheet
 - The stored location can displayed on GoogleMaps
+- "Swipe to delete"
 
 ## How to run "Just another notes app"
 
 1. Clone the repository.
 2. Open the whole project in Android Studio.
-3. Sync & Run app configuration.
-4. Replace YOUR_API_KEY with your own API key.
+3. Replace YOUR_API_KEY with your own API key.
+4. Sync & Run app configuration.
 
-   
 ### Note on Google Maps
 
 The Secrets Gradle plug-in was used to store the API key for Google Maps. It reads secrets such as
@@ -88,48 +85,12 @@ compileSdk = 34
 * com.google.android.material:material:1.11.0: Material Design Components Library from Google
 * androidx.constraintlayout:constraintlayout:2.1.4: Layout
 * com.google.android.gms:play-services-maps:18.0.2: Google Maps Integration
+* "com.google.android.gms:play-services-location:21.0.1" Geo Location Services
 * junit:junit:4.13.2: Test Framework
 * androidx.test.ext:junit:1.1.5: AndroidX Test Framework for JUnit
 * androidx.test.espresso:espresso-core:3.5.1: Framework for UI Tests
 
-### Import various classes needed for the app's functionality.
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.room.Room
-
-### Import classes related to the app's database and utility functions.
-import com.example.myapplication.dao.NoteDao
-import com.example.myapplication.database.NotesDatabase
-import com.example.myapplication.entities.Note
-import com.example.myapplication.util.ImageConverter
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.OnTokenCanceledListener
-
-### Developed by
+## Developed by
 
 Edwin Pichler, Erik Handler, Michael Tausch
 
