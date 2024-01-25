@@ -10,6 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
@@ -18,6 +19,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // Declare a GoogleMap object that will be initialized later.
     private lateinit var mMap: GoogleMap
+
     // Initialize default values for longitude, latitude, title, and message.
     private var longitude: Double = 0.0
     private var latitude: Double = 0.0
@@ -85,6 +87,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     // Inflate the menu; this adds items to the action bar if it is present.
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_maps, menu)
@@ -111,11 +114,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 .position(noteLoc)
                 .title(title)
                 .snippet(message)
-                .icon(BitmapDescriptorFactory.from-Resource(R.drawable.ic_marker_location)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_location))
         )
         // Move the camera to the note location with specified zoom level.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(noteLoc, cameraZoom))
     }
 
 }
-
