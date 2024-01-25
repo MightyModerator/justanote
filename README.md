@@ -5,9 +5,11 @@ A notes app that saves images and GPS data in addition to text entries.
 Developed by EP and EH.
 
 ## App Overview
-
+### App Start Screen
 ![image info](./screenshots/app-start-screen.png)
+### Create new Note Screen
 ![image info](./screenshots/create-new-note.png)
+### List all Notes Screen
 ![image info](./screenshots/list-notes.png)
 
 ## Project specifications
