@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:baselineAligned="false"
+    android:orientation="vertical"
     tools:context=".NoteEditActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -22,6 +22,7 @@
         android:text="@string/app_subtitle"
         app:layout_constraintBottom_toTopOf="@id/editTitle" />
 
+
     <EditText
         android:id="@+id/editTitle"
         style="@style/EditText"
@@ -29,7 +30,9 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint_title"
         android:importantForAutofill="no"
-        android:inputType="text" />
+        android:inputType="text"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp" />
 
     <EditText
         android:id="@+id/editMessage"
@@ -39,8 +42,15 @@
         android:hint="@string/hint_message"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
-        android:maxLines="5"
-        android:lines="5" />
+        android:lines="5"
+        android:maxLines="5" />
+
+    <TextView
+        android:id="@+id/editInfo"
+        style="@style/InfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/editInfo" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,62 +61,74 @@
 
         <ImageView
             android:id="@+id/editPreviewImage"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
             android:src="@drawable/ic_image" />
 
         <Button
             android:id="@+id/editUploadImage"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:drawableLeft="@drawable/ic_camera_alt"
             android:drawableTint="@color/white"
             android:text="@string/upload_image" />
 
     </LinearLayout>
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:text="@string/longitude"
-        />
+        android:layout_margin="@dimen/margin_medium"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/editLongitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="0.0"
-        />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/latitude"
-        android:textStyle="bold"
-        />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/longitude"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/editLatitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="0.0"
-        />
+            <TextView
+                android:id="@+id/editLongitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0.0" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/latitude"
+                android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/editGetLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawableLeft="@drawable/ic_gps"
-        android:drawableTint="@color/white"
-        android:text="@string/get_location" />
+            <TextView
+                android:id="@+id/editLatitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0.0" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/editGetLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_gps"
+            android:drawableTint="@color/white"
+            android:text="@string/get_location" />
+    </LinearLayout>
 
     <!-- This LinearLayout is for moving the button to the bottom -->
     <LinearLayout
@@ -114,14 +136,14 @@
         android:layout_height="0dip"
         android:layout_weight="1"
         android:gravity="center|bottom"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/btnSave"
             style="@style/Button"
-            android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="20dp"
