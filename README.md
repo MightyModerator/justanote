@@ -62,7 +62,18 @@ Insert the following code, replacing YOUR_API_KEY with your own API key: `MAPS_A
 
 ## About the build
 
-## SDK
+### Test and development environment
+
+Deloped with Android Studio Hedgehog.
+Tested with emulated Pixel 5 Android 14.0 ("UpsideDownCake") and a live device.
+
+Properties
+avd.ini.displayname              Pixel 5 API 34
+avd.ini.encoding                 UTF-8
+AvdId                            Pixel_5_API_34
+disk.dataPartition.size          6442450944
+
+### SDK
 
 minSdk = 24
 targetSdk = 34
