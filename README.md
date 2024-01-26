@@ -6,7 +6,7 @@ A notes app that saves images and GPS data in addition to text entries.
 
 ![image info](./screenshots/app-start-screen.png)
 ![image info](./screenshots/create-new-note.png)
-![image info](./screenshots/list-notes.png)
+![image info](./screenshots/list-of-notes.png)
 ![image info](./screenshots/share-a-note.png)
 ![image info](./screenshots/map-note.png)
 
