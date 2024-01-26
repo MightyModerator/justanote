@@ -93,5 +93,3 @@ compileSdk = 34
 ## Developed by
 
 Edwin Pichler, Erik Handler, Michael Tausch
-
--Copyright (c) 2024 MIT Licence-
