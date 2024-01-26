@@ -93,3 +93,9 @@ compileSdk = 34
 ## Developed by
 
 Edwin Pichler, Erik Handler, Michael Tausch
+
+## Images
+
+[Image by kstudio on Freepik](https://www.freepik.com/free-photo/untidy-pile-various-colors-sticky-post-notes-with-pushpin-isolated-white_2571689.htm#query=notes&from_query=notizen&position=20&from_view=search&track=sph&uuid=49ef48b9-8a77-4264-8d61-419ecb6faa60)
+[Image by upklyak on Freepik](https://www.freepik.com/free-photo/3d-illustration-pen-putting-blue-ticks-paper_33062183.htm#query=notes&from_query=notizen&position=22&from_view=search&track=sph&uuid=49ef48b9-8a77-4264-8d61-419ecb6faa60)
+[Image by rawpixel.com on Freepik](https://www.freepik.com/free-photo/forget-notice-reminder-words-graphic-concept_16436707.htm#query=notes&from_query=notizen&position=6&from_view=search&track=sph&uuid=05661dc2-0fcf-4ac5-b377-9eefb82d4611)
