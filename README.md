@@ -105,7 +105,9 @@ compileSdk = 34
 
 Edwin Pichler, Erik Handler, Michael Tausch
 
-## Images
+## Image Credits
+
+Images used in the screenshots to illustrate the image upload:
 
 [Image by kstudio on Freepik](https://www.freepik.com/free-photo/untidy-pile-various-colors-sticky-post-notes-with-pushpin-isolated-white_2571689.htm#query=notes&from_query=notizen&position=20&from_view=search&track=sph&uuid=49ef48b9-8a77-4264-8d61-419ecb6faa60)
 [Image by upklyak on Freepik](https://www.freepik.com/free-photo/3d-illustration-pen-putting-blue-ticks-paper_33062183.htm#query=notes&from_query=notizen&position=22&from_view=search&track=sph&uuid=49ef48b9-8a77-4264-8d61-419ecb6faa60)
